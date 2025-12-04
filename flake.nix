@@ -18,7 +18,7 @@
       let
         pkgs = nixpkgs.legacyPackages.${system};
         ignisDeps = ignis.packages.${system}.ignis.override {
-          extraPackages = [
+          extraPackages = with pkgs; [
             # Add extra packages if needed
           ];
         };
@@ -36,8 +36,12 @@
         devShell = pkgs.mkShell {
           nativeBuildInputs = with pkgs; [
             (python3.withPackages(ps: with ps; [
+              ipython
               ignisDeps
+              gobject-introspection
+              pygobject3
             ]))
+            basedpyright
           ];
         };
       }
