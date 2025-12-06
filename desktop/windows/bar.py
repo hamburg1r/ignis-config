@@ -18,10 +18,10 @@ class Bar(Window):
 		anchor: list[str]
 		fetch = FetchService.get_default()
 
-		if options.bar.direction == 'horizontal': # pyright:ignore[reportUnknownMemberType]
-			anchor = ['left', options.bar.side, 'right',] # pyright:ignore[reportUnknownMemberType]
+		if options.bar.direction == 'horizontal':
+			anchor = ['left', options.bar.side, 'right',]
 		else:
-			anchor = ['left', options.bar.side, 'right',] # pyright:ignore[reportUnknownMemberType]
+			anchor = ['left', options.bar.side, 'right',]
 
 		print(fetch.os_logo_dark)
 		applauncher = Button(
@@ -47,9 +47,9 @@ class Bar(Window):
 			]
 		)
 
-		super().__init__( # pyright:ignore[reportUnknownMemberType]
+		super().__init__(
 			visible = True,
-			namespace = f'{options.bar.direction}-bar', # pyright:ignore[reportUnknownMemberType]
+			namespace = f'{options.bar.direction}-bar',
 			monitor = monitor,
 			anchor = anchor,
 			exclusivity = "exclusive",
