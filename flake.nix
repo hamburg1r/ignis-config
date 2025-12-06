@@ -18,8 +18,13 @@
       let
         pkgs = nixpkgs.legacyPackages.${system};
         ignisDeps = ignis.packages.${system}.ignis.override {
+          enableAudioService = true;
+          enableBluetoothService = true;
+          enableNetworkService = true;
+          enableRecorderService = true;
+
           extraPackages = with pkgs; [
-            # Add extra packages if needed
+            dart-sass
           ];
         };
 
