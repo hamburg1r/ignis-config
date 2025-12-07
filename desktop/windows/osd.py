@@ -11,7 +11,7 @@ backlight = BacklightService.get_default()
 class Osd(widgets.Window):
 	def __init__(self):
 		# self.debug_brightness()
-		self.wow()
+		# self.wow()
 		self.osds = {
 			"speaker": self.genrateChild(
 				self.set_speaker_volume,
@@ -35,7 +35,10 @@ class Osd(widgets.Window):
 			namespace="ignis_OSD",
 			visible=False,
 			css_classes=["osd"],
+			setup=self._setup,
 		)
+	
+	def _setup(self, _):
 		audio.speaker.connect("notify::is-muted", lambda *_: self.toggle("speaker"))
 		audio.speaker.connect("notify::volume", lambda *_: self.toggle("speaker"))
 		audio.microphone.connect("notify::is-muted", lambda *_: self.toggle("microphone"))
