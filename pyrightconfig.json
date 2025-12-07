@@ -2,6 +2,9 @@
 	"include": [
 		"desktop"
 	],
+	"stubPath": "",
+	"reportMissingModuleSource": false,
+	"reportMissingTypeStubs": false,
 	"reportUnknownMemberType": "none",
 	"reportUnknownArgumentType": "none",
 	"reportUnknownLambdaType": "none",
