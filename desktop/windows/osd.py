@@ -25,7 +25,7 @@ class Osd(widgets.Window):
             ),
             "brightness": self._generate_child(
                 self.set_brightness,
-                icon="display-brightness-symbolic",
+                icon=backlight.bind("brightness", transform=self._get_brightness_icon),
                 value=backlight.bind(
                     "brightness", lambda v: int((v / backlight.max_brightness) * 100)
                 ),
@@ -86,6 +86,18 @@ class Osd(widgets.Window):
         if widget:
             children.append(widget)
         return widgets.Box(child=children)
+
+    def _get_brightness_icon(self, brightness_value: int) -> str:
+        if backlight.max_brightness == 0:
+            return "display-brightness-off-symbolic" # Or a suitable default
+
+        percentage = (brightness_value / backlight.max_brightness) * 100
+        if percentage > 66:
+            return "display-brightness-high-symbolic"
+        elif percentage > 33:
+            return "display-brightness-medium-symbolic"
+        else:
+            return "display-brightness-low-symbolic"
 
     def set_speaker_volume(self, value: widgets.Scale):
         audio.speaker.set_volume(value.value)
