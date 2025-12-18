@@ -1,99 +1,97 @@
 from typing import Any, Callable
+
+from gi.repository import Gtk
 from ignis import utils, widgets
 from ignis.gobject import Binding
 from ignis.services.audio import AudioService
 from ignis.services.backlight import BacklightService
-from gi.repository import Gtk
 
 audio = AudioService.get_default()
 backlight = BacklightService.get_default()
 
+
 class Osd(widgets.Window):
-	def __init__(self):
-		# self.debug_brightness()
-		# self.wow()
-		self.osds = {
-			"speaker": self.genrateChild(
-				self.set_speaker_volume,
-				icon=audio.speaker.bind("icon_name"),
-				value=audio.speaker.bind("volume"),
-			),
-			"microphone": self.genrateChild(
-				self.set_mic_volume,
-				icon=audio.microphone.bind("icon_name"),
-				value=audio.microphone.bind("volume")
-			),
-			"brightness": self.genrateChild(
-				self.set_brightness,
-				# icon="brightness",
-				value=backlight.bind("brightness", lambda v: (v/backlight.max_brightness)*100)
-			)
-		}
-		super().__init__(
-			layer="overlay",
-			anchor=["bottom"],
-			namespace="ignis_OSD",
-			visible=False,
-			css_classes=["osd"],
-			setup=self._setup,
-		)
-	
-	def _setup(self, _):
-		audio.speaker.connect("notify::is-muted", lambda *_: self.toggle("speaker"))
-		audio.speaker.connect("notify::volume", lambda *_: self.toggle("speaker"))
-		audio.microphone.connect("notify::is-muted", lambda *_: self.toggle("microphone"))
-		audio.microphone.connect("notify::volume", lambda *_: self.toggle("microphone"))
-		backlight.connect("notify::brightness", lambda *_: self.toggle("brightness"))
+    def __init__(self):
+        self.osds = {
+            "speaker": self._generate_child(
+                self.set_speaker_volume,
+                icon=audio.speaker.bind("icon_name"),
+                value=audio.speaker.bind("volume"),
+            ),
+            "microphone": self._generate_child(
+                self.set_mic_volume,
+                icon=audio.microphone.bind("icon_name"),
+                value=audio.microphone.bind("volume"),
+            ),
+            "brightness": self._generate_child(
+                self.set_brightness,
+                icon="display-brightness-symbolic",
+                value=backlight.bind(
+                    "brightness", lambda v: int((v / backlight.max_brightness) * 100)
+                ),
+            ),
+        }
+        super().__init__(
+            layer="overlay",
+            anchor=["bottom"],
+            namespace="ignis_OSD",
+            visible=False,
+            css_classes=["osd"],
+            setup=self._setup,
+        )
 
-	def toggle(self, osd: str):
-		self.set_child(self.osds[osd])
-		self.visible = True
-		self.__hide()
-		# print("yes", osd)
-	
-	@utils.debounce(3000)
-	def __hide(self) -> None:
-		self.visible = False
+    def _setup(self, _):
+        connections = {
+            "speaker": (audio.speaker, ["is-muted", "volume"]),
+            "microphone": (audio.microphone, ["is-muted", "volume"]),
+            "brightness": (backlight, ["brightness"]),
+        }
 
-	def genrateChild(self,
-		callback: Callable[[widgets.Scale],None] | None,
-		icon: str | widgets.Icon | Binding | None = None,
-		value: int | Binding | None = None,
-		widget: Any = None # pyright: ignore[reportAny, reportExplicitAny]
-	):
-		return widgets.Box(
-			child = [
-				widgets.Icon(
-					css_classes = ["icon"],
-					image = icon
-				) if icon is not None else None,
-				widgets.Scale(
-					vertical=False,
-					css_classes=["material-slider"],
-					min=0,
-					max=100,
-					value=value,
-					hexpand=True,
-					on_change=callback,
-				) if value is not None else None,
-				widget
-			]
-		)
+        for name, (service, props) in connections.items():
+            for prop in props:
+                service.connect(f"notify::{prop}", lambda *_, n=name: self.toggle(n))
 
-	def set_speaker_volume(self, value: widgets.Scale):
-		self.toggle("speaker")
-		audio.speaker.set_volume(value.value)
+    def toggle(self, osd: str):
+        self.set_child(self.osds[osd])
+        self.visible = True
+        self._hide()
 
-	def set_mic_volume(self, value: widgets.Scale):
-		self.toggle("microphone")
-		audio.microphone.set_volume(value.value)
-	
-	def set_brightness(self, value: widgets.Scale):
-		self.toggle("brightness")
-		backlight.set_brightness(backlight.max_brightness*value.value/100)
-	
-	def wow(self):
-		print(dir(Gtk.IconTheme))
-		print(Gtk.IconTheme.get_search_path)
-	# def debug_brightness(self):
-	# 	print("{ devices: [", *[f"device_name: {device.device_name}, max_brightness: {device.max_brightness}, brightness: {device.brightness}" for device in backlight.devices],"] }")
+    @utils.debounce(3000)
+    def _hide(self) -> None:
+        self.visible = False
+
+    def _generate_child(
+        self,
+        callback: Callable[[widgets.Scale], None] | None,
+        *,
+        icon: str | widgets.Icon | Binding | None = None,
+        value: int | Binding | None = None,
+        widget: Gtk.Widget | None = None,
+    ):
+        children = []
+        if icon:
+            children.append(widgets.Icon(css_classes=["icon"], image=icon))
+        if value is not None:
+            children.append(
+                widgets.Scale(
+                    vertical=False,
+                    css_classes=["material-slider"],
+                    min=0,
+                    max=100,
+                    value=value,
+                    hexpand=True,
+                    on_change=callback,
+                )
+            )
+        if widget:
+            children.append(widget)
+        return widgets.Box(child=children)
+
+    def set_speaker_volume(self, value: widgets.Scale):
+        audio.speaker.set_volume(value.value)
+
+    def set_mic_volume(self, value: widgets.Scale):
+        audio.microphone.set_volume(value.value)
+
+    def set_brightness(self, value: widgets.Scale):
+        backlight.set_brightness(backlight.max_brightness * value.value / 100)
