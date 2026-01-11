@@ -28,15 +28,19 @@
           ];
         };
 
+        ignis-init-desktop = import ./nix/ignis-init.nix {
+          inherit pkgs ignisDeps;
+          src = self;
+        };
       in
-      {
+      rec {
         packages = rec {
-          # hello = pkgs.hello;
-          # default = hello;
+          inherit ignis-init-desktop;
+          ignis = ignisDeps;
+          default = ignis-init-desktop;
         };
         apps = rec {
-          # hello = flake-utils.lib.mkApp { drv = self.packages.${system}.hello; };
-          # default = hello;
+          default = flake-utils.lib.mkApp { drv = packages.default; };
         };
         devShell = pkgs.mkShell {
           buildInputs = with pkgs; [
