@@ -28,7 +28,7 @@
           ];
         };
 
-        ignis-init-desktop = import ./nix/ignis-init.nix {
+        ignis-init-desktop = import ./nix/bin/desktop.nix {
           inherit pkgs ignisDeps;
           src = self;
         };
@@ -39,6 +39,8 @@
           ignis = ignisDeps;
           default = ignis-init-desktop;
         };
+        nixosModules.ignis-desktop = import ./nix/modules/nixos;
+        homeManagerModules.ignis-desktop = import ./nix/modules/home-manager;
         apps = rec {
           default = flake-utils.lib.mkApp { drv = packages.default; };
         };
