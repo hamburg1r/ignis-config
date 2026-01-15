@@ -1,6 +1,6 @@
 { pkgs, ignisDeps, src }:
 
-pkgs.writeShellScriptBin "ignis-init-desktop" ''
+pkgs.writeShellScriptBin "ignis-desktop" ''
   #!''${pkgs.runtimeShell}
-  ${ignisDeps}/bin/ignis init -c ${src}/desktop
+  exec ${ignisDeps}/bin/ignis init -c ${src}/desktop
 ''

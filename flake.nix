@@ -28,19 +28,17 @@
           ];
         };
 
-        ignis-init-desktop = import ./nix/bin/desktop.nix {
+        ignis-desktop = import ./nix/bin/desktop.nix {
           inherit pkgs ignisDeps;
           src = self;
         };
       in
       rec {
         packages = rec {
-          inherit ignis-init-desktop;
+          inherit ignis-desktop;
           ignis = ignisDeps;
-          default = ignis-init-desktop;
+          default = ignis-desktop;
         };
-        nixosModules.ignis-desktop = import ./nix/modules/nixos;
-        homeManagerModules.ignis-desktop = import ./nix/modules/home-manager;
         apps = rec {
           default = flake-utils.lib.mkApp { drv = packages.default; };
         };
@@ -66,5 +64,19 @@
           '';
         };
       }
-    );
+    ) //
+    {
+nixosModules =
+          let mod = import ./nix/modules/nixos { inherit self; };
+          in {
+            default = mod;
+            ignis-desktop = mod;
+          };
+        homeManagerModules =
+          let mod = import ./nix/modules/home-manager { inherit self; };
+          in {
+            default = mod;
+            ignis-desktop = mod;
+          };
+    };
 }
