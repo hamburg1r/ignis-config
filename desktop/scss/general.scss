@@ -8,6 +8,9 @@
     * {
         all: unset;
     }
+    & slider {
+        min-height: 1rem;
+    }
 }
 
 .material-slider trough,
@@ -20,6 +23,7 @@
 
 .material-slider trough highlight {
     // background-color: $primary;
+    background-color: rgb(123,230,100);
 }
 
 .material-slider-icon {
