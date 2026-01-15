@@ -57,24 +57,24 @@ class Apps(widgets.Box):
             child=applications.bind(
                 "pinned",
                 transform=lambda value: [AppItem(app) for app in value]
-                + [
-                    widgets.Box(
-                        child = hyprland.bind(
-                            "windows",
-                            transform = lambda _: [
-                                widgets.Button(
-                                    child = widgets.Icon(icon_name=Utils.get_app_icon_name(window.class_name)),
-                                    tooltip_text = window.title,
-                                    on_click = self.focusClient(window.address),
-                                ) for window in self.fetchClients()
-                            ]
-                        )
-                    )
-                ]
+                # + [
+                #     widgets.Box(
+                #         child = hyprland.bind(
+                #             "windows",
+                #             transform = lambda _: [
+                #                 widgets.Button(
+                #                     child = widgets.Icon(icon_name=Utils.get_app_icon_name(window.class_name)),
+                #                     tooltip_text = window.title,
+                #                     on_click = self.focusClient(window.address),
+                #                 ) for window in self.fetchClients()
+                #             ]
+                #         )
+                #     )
+                # ]
                 + [
                     widgets.Button(
                         child=widgets.Icon(image="start-here-symbolic", pixel_size=32),
-                        on_click=lambda x: window_manager.toggle_window("ignis_LAUNCHER"),
+                        on_click=lambda x: window_manager.toggle_window("Launcher"),
                         css_classes=["pinned-app", "unset"],
                     )
                 ],
