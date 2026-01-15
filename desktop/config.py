@@ -5,6 +5,10 @@ from desktop.windows.bar import Bar
 from desktop.windows.osd import Osd
 from desktop.windows.search import SearchList
 
+from desktop.windows.icons import IconBrowser
+
+from desktop.windows.launcher import Launcher
+
 css_manager=CssManager.get_default()
 
 def patch_style_scss(path):
@@ -29,3 +33,5 @@ print(css_manager.list_css_infos())
 Bar(0)
 Osd()
 SearchList()
+Launcher()
+# IconBrowser()
