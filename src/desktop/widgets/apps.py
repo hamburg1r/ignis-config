@@ -7,6 +7,7 @@ from ignis.services.hyprland import HyprlandService, HyprlandWindow
 from ignis.menu_model import IgnisMenuModel, IgnisMenuItem, IgnisMenuSeparator
 
 from desktop.options import settins
+from desktop.utils import toggle_launcher
 
 applications = ApplicationsService.get_default()
 window_manager = WindowManager.get_default()
@@ -74,7 +75,7 @@ class Apps(widgets.Box):
                 + [
                     widgets.Button(
                         child=widgets.Icon(image="start-here-symbolic", pixel_size=32),
-                        on_click=lambda x: window_manager.toggle_window("Launcher"),
+                        on_click=lambda x: toggle_launcher(),
                         css_classes=["pinned-app", "unset"],
                     )
                 ],
@@ -83,11 +84,11 @@ class Apps(widgets.Box):
 
     def fetchClients(self):
         clients: list[HyprlandWindow] = cast(list[HyprlandWindow], hyprland.windows)
-        # for c in clients:
-        #     print(c.class_name)
+        for c in clients:
+            print(c.class_name)
         clients = sorted(clients, key=lambda client: client.class_name)
-        # for c in clients:
-        #     print(c.class_name)
+        for c in clients:
+            print(c.class_name)
         return clients
 
     def focusClient(self, address: str):

@@ -28,16 +28,17 @@
           ];
         };
 
-        ignis-desktop = import ./nix/bin/desktop.nix {
+        desktop-derivation = import ./nix/pkgs/desktop.nix {
           inherit pkgs ignisDeps;
           src = self;
         };
       in
       rec {
         packages = rec {
-          inherit ignis-desktop;
+          ignis-desktop = desktop-derivation.package; # This is the python package
+          ignis-desktop-executable = desktop-derivation.executable; # The executable script
           ignis = ignisDeps;
-          default = ignis-desktop;
+          default = ignis-desktop-executable; # The default app is still the executable
         };
         apps = rec {
           default = flake-utils.lib.mkApp { drv = packages.default; };
