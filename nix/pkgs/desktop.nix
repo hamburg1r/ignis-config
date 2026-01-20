@@ -12,7 +12,7 @@ pkgs.python3Packages.buildPythonApplication {
   ];
 
   postInstall = ''
-    makeWrapper ${ignisDeps}/bin/ignis $out/bin/desktop.nix \
-      --add-flags "init -c $out/${pkgs.python3.sitePackages}"
+    makeWrapper ${ignisDeps}/bin/ignis $out/bin/ignis-desktop \
+      --add-flags "init -c $out/${pkgs.python3.sitePackages}/desktop"
   '';
 }
