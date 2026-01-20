@@ -6,23 +6,13 @@ pkgs.python3Packages.buildPythonApplication {
   format = "setuptools";
   doCheck = false;
   
-  # propagatedBuildInputs = [
-  #   ignisDeps
-  # ];
-  
   nativeBuildInputs = [
-    ignisDeps
     pkgs.python3Packages.setuptools
-    pkgs.gobject-introspection
+    pkgs.makeWrapper
   ];
-  
-  buildInputs = [
-    pkgs.gtk3
-    pkgs.gtk4
-    pkgs.glib
-    pkgs.gtk4-layer-shell
-  ];
-  
-  # The key: inherit GI_TYPELIB_PATH from ignisDeps
 
+  postInstall = ''
+    makeWrapper ${ignisDeps}/bin/ignis $out/bin/desktop.nix \
+      --add-flags "init -c $out/${pkgs.python3.sitePackages}"
+  '';
 }
