@@ -22,5 +22,5 @@ desktop = [
 
 [tool.basedpyright]
 executionEnvironments = [
-  { root = "src", extraPaths = ["src/desktop"] }
+  { root = "src" }
 ]
