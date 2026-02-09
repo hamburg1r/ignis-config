@@ -6,7 +6,7 @@ from ignis.services.applications import ApplicationsService, Application
 from ignis.services.hyprland import HyprlandService, HyprlandWindow
 from ignis.menu_model import IgnisMenuModel, IgnisMenuItem, IgnisMenuSeparator
 
-from desktop.options import settins
+from desktop.options import settings
 from desktop.utils import toggle_launcher
 
 applications = ApplicationsService.get_default()
@@ -45,7 +45,7 @@ class AppItem(widgets.Button):
 
         super().__init__(
             child=widgets.Box(child=[widgets.Icon(image=app.icon, pixel_size=32), menu]),
-            on_click=lambda x: app.launch(terminal_format=settins.user.terminal_command),
+            on_click=lambda x: app.launch(terminal_format=settings.user.terminal_command),
             on_right_click=lambda x: menu.popup(),
             css_classes=["pinned-app", "unset"],
         )

@@ -12,17 +12,26 @@ class Settings(OptionsManager):
 				_ = f.write('{}')
 		super().__init__(file=self._file)
 
+	def save_to_file(self):
+		super().save_to_file(file=self._file)
+
+
 	class Bar(OptionsGroup):
-		direction: Literal['vertical', 'horizontal'] = 'horizontal'
-		side: str = 'top'
+		direction: Literal['vertical', 'horizontal'] = 'vertical'
+		side: Literal['left', 'right', 'top', 'bottom'] = 'left'
 
 	class DateTime(OptionsGroup):
-		format: str = '%I:%M %p'
+		horizontal_format: str = '%I:%M %p'
+		vertical_format: str = '%I\n%M\n%p'
 		tooltip_format = '%c'
 		polling_time: int = 1000
+		display_mode: Literal["icon_only", "text_only", "icon_and_text"] = "text_only"
+		icon_name: str = "accessories-calculator-symbolic"
 
 	class Battery(OptionsGroup):
 		max: int = 60
+		show_battery: bool = False
+		format_string: str = "{percent}%"
 
 	class User(OptionsGroup):
 
@@ -38,4 +47,4 @@ class Settings(OptionsManager):
 	battery: Battery = Battery()
 	user: User = User()
 
-settins = Settings()
+settings = Settings()

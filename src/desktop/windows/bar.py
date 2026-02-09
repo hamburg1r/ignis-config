@@ -21,9 +21,8 @@ class Bar(Window):
 		if options.bar.direction == 'horizontal':
 			anchor = ['left', options.bar.side, 'right',]
 		else:
-			anchor = ['left', options.bar.side, 'right',]
+			anchor = ['top', options.bar.side, 'bottom',]
 
-		print(fetch.os_logo_dark)
 		applauncher = Button(
 			child = Icon(
 				image = fetch.os_logo
@@ -39,11 +38,11 @@ class Bar(Window):
 		)
 
 		end_children = Box(
+			orientation = options.bar.direction,
 			child = [
-				Tray(),
+				Tray(direction = options.bar.direction),
 				Battery(),
-				# DeviceBattery(),
-				DateTime(),
+				DateTime(orientation = options.bar.direction),
 			]
 		)
 
@@ -54,16 +53,10 @@ class Bar(Window):
 			anchor = anchor,
 			exclusivity = "exclusive",
 			layer = "top",
-			# kb_mode: str = "none",
-			# popup: bool = False,
-			# margin_bottom: int = 0,
-			# margin_left: int = 0,
-			# margin_right: int = 0,
-			# margin_top: int = 0,
-			# dynamic_input_region: bool = False,
 			child = CenterBox(
 				start_widget = start_children,
 				center_widget = center_children,
 				end_widget = end_children,
+				orientation = options.bar.direction,
 			)
 		)

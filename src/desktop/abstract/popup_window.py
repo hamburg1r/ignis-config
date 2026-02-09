@@ -11,8 +11,8 @@ class PopupWindow(Window):
             anchor=["left", "right", "top", "bottom"],
             kb_mode="on_demand",
             layer="bottom",
-			visible=False,
-			popup=True,
+            visible=False,
+            popup=True,
             # setup=lambda self: self.connect("notify::visible", self.__on_open),
             child=Overlay(
                 css_classes=["backdrop"],

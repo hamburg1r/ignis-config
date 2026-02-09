@@ -35,7 +35,7 @@ class Tray(widgets.Box):
     __gtype_name__:str = "Tray"
 
 
-    def __init__(self):
+    def __init__(self, direction: str):
         system_tray.connect("notify::items", self.p)
         super().__init__(
             css_classes=["tray"],
@@ -44,6 +44,7 @@ class Tray(widgets.Box):
             ),
             spacing=10,
         )
+        self.orientation = direction
 
     def p(self, g, items):
         # print(dir(g.items))

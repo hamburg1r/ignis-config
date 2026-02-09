@@ -5,9 +5,7 @@ from ignis.css_manager import CssInfoPath, CssManager
 from desktop.windows.bar import Bar
 from desktop.windows.osd import Osd
 from desktop.windows.search import SearchList
-
 from desktop.windows.icons import IconBrowser
-
 from desktop.windows.launcher import Launcher
 
 css_manager = CssManager.get_default()
