@@ -1,0 +1,62 @@
+/* src/desktop/scss/settings.scss */
+
+.settings-main-layout {
+  // Main layout of the settings window
+  border: 1px solid #444444; // Separator between nav and content
+}
+
+.settings-nav-panel {
+  border-right: 1px solid #444444; // Separator between nav and content
+  padding: 10px;
+}
+
+.settings-nav-panel listbox {
+  background-color: transparent; // Ensure listbox background is transparent
+}
+
+.settings-nav-panel listboxrow {
+  padding: 5px 10px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+}
+
+.settings-nav-panel listboxrow:hover {
+  background-color: #444444; // Hover effect for nav items
+}
+
+.settings-nav-panel listboxrow:selected {
+  background-color: #555555; // Selected effect for nav items
+  color: white;
+}
+
+.settings-category-page {
+  // Styles for the category page container, color/padding etc.
+}
+
+.settings-window {
+  // Basic styling for the settings window itself
+  background-color: #333333; // Generic dark grey
+  padding: 1rem;
+}
+
+.settings-group-header {
+  // Styling for the collapsible section headers
+  font-weight: bold;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #555555; // Generic gray border
+  margin-bottom: 0.5rem;
+}
+
+.settings-row {
+  // Styling for individual setting rows
+  padding: 0.25rem 0;
+
+  }
+
+.settings-row label {
+  // Styles for the label within a setting row
+}
+
+.bottom-buttons {
+  // Styles for the bottom button box, color/padding etc.
+}

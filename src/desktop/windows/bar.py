@@ -7,6 +7,8 @@ from desktop.widgets.apps import Apps
 from desktop.widgets.battery import Battery, DeviceBattery
 from desktop.widgets.date_time import DateTime
 from desktop.widgets.tray import Tray
+from desktop.windows.blinker import Blinker # Added Blinker import
+from desktop.widgets.blinker_button import BlinkerButton # Added BlinkerButton import
 
 options = Settings()
 
@@ -37,10 +39,15 @@ class Bar(Window):
 			child = [Apps(),]
 		)
 
+		# Create Blinker instance and its toggle button
+		blinker_instance = Blinker(namespace=f"bar-blinker-{monitor}")
+		blinker_toggle_button = BlinkerButton(blinker=blinker_instance)
+
 		end_children = Box(
 			orientation = options.bar.direction,
 			child = [
 				Tray(direction = options.bar.direction),
+				blinker_toggle_button, # Inserted BlinkerButton here
 				Battery(),
 				DateTime(orientation = options.bar.direction),
 			]

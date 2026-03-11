@@ -1,0 +1,9 @@
+/* src/desktop/scss/blinker.scss */
+.blinker-window-background {
+  background-color: transparent; /* Default to transparent, can be overridden for blinking effect */
+}
+
+.blinker-window-background.blinker-active {
+  background-color: rgba(0, 0, 0, 0.9); /* Semi-transparent black when active */
+  /* Add any other active styles here */
+}

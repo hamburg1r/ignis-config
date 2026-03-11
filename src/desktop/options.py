@@ -12,8 +12,8 @@ class Settings(OptionsManager):
 				_ = f.write('{}')
 		super().__init__(file=self._file)
 
-	def save_to_file(self):
-		super().save_to_file(file=self._file)
+	def save_to_file(self, file = _file):
+		super().save_to_file(file=file)
 
 
 	class Bar(OptionsGroup):
@@ -33,6 +33,26 @@ class Settings(OptionsManager):
 		show_battery: bool = False
 		format_string: str = "{percent}%"
 
+	class Blinker(OptionsGroup):
+		blink_interval_ms: int = 4000
+		blink_duration_ms: int = 150
+
+	class Icons(OptionsGroup):
+		icon_theme: Literal["material", "fontawesome", "codicons", "image"] = "material"
+		
+		blinker_start: dict[str, str] = {
+			"material": "󰛐",
+			"fontawesome": "",
+			"codicons": "",
+			"image": "media-playback-start-symbolic",
+		}
+		blinker_stop: dict[str, str] = {
+			"material": "󰛑",
+			"fontawesome": "",
+			"codicons": "",
+			"image": "media-playback-stop-symbolic",
+		}
+
 	class User(OptionsGroup):
 
 		class Colors(OptionsGroup):
@@ -45,6 +65,8 @@ class Settings(OptionsManager):
 	bar: Bar = Bar() # type: ignore[reportUnknownMemberType]
 	date_time: DateTime = DateTime()
 	battery: Battery = Battery()
+	blinker: Blinker = Blinker() # type: ignore[reportUnknownMemberType]
+	icons: Icons = Icons() # type: ignore[reportUnknownMemberType]
 	user: User = User()
 
 settings = Settings()

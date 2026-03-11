@@ -17,6 +17,7 @@ scss_imports = [
     os.path.join(utils.get_current_dir(), "scss/general.scss"),
     os.path.join(utils.get_current_dir(), "scss/osd.scss"),
     os.path.join(utils.get_current_dir(), "scss/search.scss"),
+    os.path.join(utils.get_current_dir(), "scss/settings.scss"),
 ]
 
 def compile_scss():
